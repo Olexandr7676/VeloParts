@@ -1,9 +1,165 @@
 <!DOCTYPE html>
-<html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ page_title }}</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: #f5f5f5; color: #333; }
+
+        /* Хедер */
+        header { background-color: #2a2a2a; color: white; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; }
+        .logo-area h1 { margin: 0; font-size: 28px; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; }
+
+        /* === НОВИЙ СТИЛЬ КОНТАКТІВ === */
+       .contact-wrapper { display: flex; gap: 40px; margin-left: auto; margin-right: 40px; }
+        .info-block { display: flex; align-items: center; gap: 12px; font-size: 14px; color: #ccc; }
+        .info-block .icon { font-size: 24px; }
+        .info-block strong { display: block; font-size: 15px; color: white; margin-bottom: 3px; }
+        /* ============================= */
+
+        .cart-btn { background: #333; padding: 10px 20px; border-radius: 25px; border: 1px solid #444; font-weight: bold; }
+
+        /* Навігація */
+        nav { background-color: white; padding: 15px 40px; display: flex; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .nav-links { margin-left: auto; margin-right: 40px; }
+        .nav-links a { color: #333; text-decoration: none; margin-right: 25px; font-weight: bold; font-size: 14px; text-transform: uppercase; }
+        .nav-links a:hover { color: #ff4d4d; }
+        .nav-auth a { text-decoration: none; color: #333; font-weight: bold; font-size: 14px; margin-left: 20px; }
+        .btn-register { background-color: #ff4d4d; color: white !important; padding: 10px 20px; border-radius: 4px; }
+
+        /* Основний макет */
+        .container { display: flex; max-width: 1300px; margin: 30px auto; gap: 30px; padding: 0 20px; }
+
+        /* Сайдбар */
+        .sidebar { background: white; width: 280px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); align-self: flex-start; }
+        .sidebar h3 { background: #2a2a2a; color: white; padding: 15px 20px; margin: 0; border-radius: 5px 5px 0 0; font-size: 16px; text-transform: uppercase; text-align: center; }
+        .sidebar ul { list-style: none; padding: 0; margin: 0; }
+        .sidebar li { border-bottom: 1px solid #eee; }
+        .sidebar li a { display: block; padding: 15px 20px; text-decoration: none; color: #333; font-weight: bold; }
+        .sidebar li a:hover { color: #ff4d4d; background-color: #fafafa; }
+
+        /* Контент і Товари */
+        .main-content { flex: 1; }
+        .page-title { margin-top: 0; font-size: 22px; border-bottom: 2px solid #ddd; padding-bottom: 10px; margin-bottom: 20px; }
+        .products-grid { display: flex; flex-wrap: wrap; gap: 20px; }
+
+        .product-card { background: white; padding: 20px; border-radius: 5px; width: calc(33.333% - 20px); box-sizing: border-box; box-shadow: 0 2px 5px rgba(0,0,0,0.05); text-align: center; display: flex; flex-direction: column; justify-content: space-between; }
+        .product-card h4 { margin: 15px 0 5px 0; font-size: 16px; color: #222; }
+        .brand-name { color: #888; font-size: 13px; margin-bottom: 15px; }
+        .price { font-size: 20px; font-weight: bold; color: #ff4d4d; margin-bottom: 15px; }
+        .btn-buy { background: #ff4d4d; color: white; border: none; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.2s; }
+        .btn-buy:hover { background: #e60000; }
+
+        /* Пагінація */
+        .pagination-container { text-align: center; margin-top: 40px; }
+        .pagination { display: inline-flex; align-items: center; background: white; padding: 10px 25px; border-radius: 30px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .pagination span { font-weight: bold; color: #333; font-size: 14px; }
+
+        /* Футер */
+        footer { background-color: #1a1a1a; color: #ccc; margin-top: 50px; padding: 40px 20px 20px 20px; }
+        .footer-inner { max-width: 1300px; margin: 0 auto; display: flex; justify-content: flex-end; border-bottom: 1px solid #333; padding-bottom: 30px; margin-bottom: 20px; }
+        .subscribe-box { text-align: right; }
+        .subscribe-box p { font-weight: bold; margin-top: 0; color: white; }
+        .subscribe-box input { padding: 10px 15px; width: 250px; border: none; border-radius: 3px; outline: none; }
+        .subscribe-box button { background: #ff4d4d; border: none; color: white; padding: 10px 20px; font-weight: bold; border-radius: 3px; cursor: pointer; margin-left: 10px; }
+        .copyright { text-align: center; font-size: 13px; color: #888; }
+    </style>
+</head>
 <body>
-    <h1>{{ page_title }}</h1>
-    <p>{{ text_content }}</p>
-    <hr>
-    <a href="/about/">Перейти до сторінки "Про нас"</a>
+
+    <header>
+        <div class="logo-area">
+            <h1>🚲 VELOPARTS</h1>
+        </div>
+
+        <div class="contact-wrapper">
+            <div class="info-block">
+                <div class="icon">📞</div>
+                <div>
+                    <strong>Дзвоніть з 09:00 до 18:00</strong>
+                    0 (99) 646-18-61
+                </div>
+            </div>
+            <div class="info-block">
+                <div class="icon">📍</div>
+                <div>
+                    <strong>Магазин «VeloParts»</strong>
+                    м. Луцьк, вул. Соборності, 14
+                </div>
+            </div>
+        </div>
+        <div class="cart-btn">🛒 0</div>
+    </header>
+
+    <nav>
+        <div class="nav-links">
+            <a href="/">ГОЛОВНА</a>
+            <a href="/about/">ПРО НАС</a>
+            <a href="#">ОПЛАТА ТА ДОСТАВКА</a>
+            <a href="#">КОНТАКТИ</a>
+        </div>
+        <div class="nav-auth">
+            <a href="#">УВІЙТИ</a>
+            <a href="#" class="btn-register">РЕЄСТРАЦІЯ</a>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <aside class="sidebar">
+            <h3>КАТАЛОГ ТОВАРІВ</h3>
+            <ul>
+                <li><a href="#">📦 Всі товари</a></li>
+                {% for cat in categories %}
+                    <li><a href="#">⚙️ {{ cat.name }}</a></li>
+                {% empty %}
+                    <li><a href="#">Категорій немає</a></li>
+                {% endfor %}
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <h2 class="page-title">Запчастини для велосипеда</h2>
+
+            <div class="products-grid">
+                {% for item in products %}
+                    <div class="product-card">
+                        <div style="font-size: 50px; color:#ddd;">🚲</div>
+                        <div>
+                            <h4>{{ item.name }}</h4>
+                            <div class="brand-name">{{ item.brand.name }}</div>
+                        </div>
+                        <div>
+                            <div class="price">{{ item.price }} грн</div>
+                            <button class="btn-buy">🛒 КУПИТИ</button>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>Товарів немає. Додайте в адмінці.</p>
+                {% endfor %}
+            </div>
+
+            <div class="pagination-container">
+                <div class="pagination">
+                    <span>Стор. 1 з 1</span>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <footer>
+        <div class="footer-inner">
+            <div class="subscribe-box">
+                <p>Підпишіться на наші новини та акції:</p>
+                <input type="email" placeholder="Ваш Email">
+                <button>Підписатися</button>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2026 Магазин VELOPARTS. Всі права захищено.
+        </div>
+    </footer>
+
 </body>
 </html>
