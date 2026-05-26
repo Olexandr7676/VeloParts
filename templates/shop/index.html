@@ -9,14 +9,13 @@
         /* Хедер */
         header { background-color: #2a2a2a; color: white; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; }
         .logo-area h1 { margin: 0; font-size: 28px; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; }
+        .logo-area a { color: white; text-decoration: none; } /* Щоб логотип був без підкреслення */
 
-        /* === НОВИЙ СТИЛЬ КОНТАКТІВ === */
-       .contact-wrapper { display: flex; gap: 40px; margin-left: auto; margin-right: 40px; }
+        /* Контакти */
+        .contact-wrapper { display: flex; gap: 40px; margin-left: auto; margin-right: 40px; }
         .info-block { display: flex; align-items: center; gap: 12px; font-size: 14px; color: #ccc; }
         .info-block .icon { font-size: 24px; }
         .info-block strong { display: block; font-size: 15px; color: white; margin-bottom: 3px; }
-        /* ============================= */
-
         .cart-btn { background: #333; padding: 10px 20px; border-radius: 25px; border: 1px solid #444; font-weight: bold; }
 
         /* Навігація */
@@ -43,7 +42,10 @@
         .page-title { margin-top: 0; font-size: 22px; border-bottom: 2px solid #ddd; padding-bottom: 10px; margin-bottom: 20px; }
         .products-grid { display: flex; flex-wrap: wrap; gap: 20px; }
 
-        .product-card { background: white; padding: 20px; border-radius: 5px; width: calc(33.333% - 20px); box-sizing: border-box; box-shadow: 0 2px 5px rgba(0,0,0,0.05); text-align: center; display: flex; flex-direction: column; justify-content: space-between; }
+        /* Оновлений дизайн карток для фотографій і клікабельності */
+        .product-card { background: white; padding: 20px; border-radius: 5px; width: calc(33.333% - 20px); box-sizing: border-box; box-shadow: 0 2px 5px rgba(0,0,0,0.05); text-align: center; display: flex; flex-direction: column; justify-content: space-between; text-decoration: none; color: inherit; transition: 0.3s; }
+        .product-card:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.1); transform: translateY(-3px); }
+        .product-img { width: 100%; height: 160px; object-fit: contain; margin-bottom: 15px; } /* Клас для фото */
         .product-card h4 { margin: 15px 0 5px 0; font-size: 16px; color: #222; }
         .brand-name { color: #888; font-size: 13px; margin-bottom: 15px; }
         .price { font-size: 20px; font-weight: bold; color: #ff4d4d; margin-bottom: 15px; }
@@ -69,7 +71,8 @@
 
     <header>
         <div class="logo-area">
-            <h1>🚲 VELOPARTS</h1>
+            <!-- Змінили посилання на головну -->
+            <h1><a href="{% url 'home' %}">🚲 VELOPARTS</a></h1>
         </div>
 
         <div class="contact-wrapper">
@@ -93,8 +96,9 @@
 
     <nav>
         <div class="nav-links">
-            <a href="/">ГОЛОВНА</a>
-            <a href="/about/">ПРО НАС</a>
+            <!-- Змінили посилання на дійсні URL -->
+            <a href="{% url 'home' %}">ГОЛОВНА</a>
+            <a href="{% url 'about' %}">ПРО НАС</a>
             <a href="#">ОПЛАТА ТА ДОСТАВКА</a>
             <a href="#">КОНТАКТИ</a>
         </div>
@@ -109,9 +113,10 @@
         <aside class="sidebar">
             <h3>КАТАЛОГ ТОВАРІВ</h3>
             <ul>
-                <li><a href="#">📦 Всі товари</a></li>
+                <!-- Посилання на категорію -->
+                <li><a href="{% url 'home' %}">📦 Всі товари</a></li>
                 {% for cat in categories %}
-                    <li><a href="#">⚙️ {{ cat.name }}</a></li>
+                    <li><a href="{% url 'category' cat.id %}">⚙️ {{ cat.name }}</a></li>
                 {% empty %}
                     <li><a href="#">Категорій немає</a></li>
                 {% endfor %}
@@ -123,8 +128,16 @@
 
             <div class="products-grid">
                 {% for item in products %}
-                    <div class="product-card">
-                        <div style="font-size: 50px; color:#ddd;">🚲</div>
+                    <!-- Тепер вся картка - це посилання на сторінку товару -->
+                    <a href="{% url 'product' item.id %}" class="product-card">
+
+                        <!-- Вивід фотографії -->
+                        {% if item.image %}
+                            <img src="{{ item.image.url }}" alt="{{ item.name }}" class="product-img">
+                        {% else %}
+                            <div style="font-size: 50px; color:#ddd; margin-bottom: 15px;">🚲</div>
+                        {% endif %}
+
                         <div>
                             <h4>{{ item.name }}</h4>
                             <div class="brand-name">{{ item.brand.name }}</div>
@@ -133,7 +146,7 @@
                             <div class="price">{{ item.price }} грн</div>
                             <button class="btn-buy">🛒 КУПИТИ</button>
                         </div>
-                    </div>
+                    </a>
                 {% empty %}
                     <p>Товарів немає. Додайте в адмінці.</p>
                 {% endfor %}
