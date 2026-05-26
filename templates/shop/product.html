@@ -1,108 +1,103 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'shop/base.html' %}
+{% block title %}{{ product.name }} | VeloParts{% endblock %}
 
-</body>
-</html><!DOCTYPE html>
-<html lang="uk">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ page_title }}</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: #f5f5f5; color: #333; }
-        header { background-color: #2a2a2a; color: white; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; }
-        .logo-area h1 { margin: 0; font-size: 28px; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; }
-        .logo-area a { color: white; text-decoration: none; }
-        .contact-wrapper { display: flex; gap: 40px; }
-        .info-block { display: flex; align-items: center; gap: 12px; font-size: 14px; color: #ccc; }
-        .info-block .icon { font-size: 24px; }
-        .info-block strong { display: block; font-size: 15px; color: white; margin-bottom: 3px; }
-        .cart-btn { background: #333; padding: 10px 20px; border-radius: 25px; border: 1px solid #444; font-weight: bold; }
-        nav { background-color: white; padding: 15px 40px; display: flex; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        .nav-links { margin-left: auto; margin-right: 40px; }
-        .nav-links a { color: #333; text-decoration: none; margin-right: 25px; font-weight: bold; font-size: 14px; text-transform: uppercase; }
-        .nav-links a:hover { color: #ff4d4d; }
-        .container { max-width: 1300px; margin: 30px auto; padding: 0 20px; }
+{% block content %}
+<!-- КАРТКА ТОВАРУ -->
+<div style="background: white; border-radius: 12px; padding: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: flex; gap: 35px; margin-bottom: 30px; align-items: flex-start;">
 
-        /* === ДИЗАЙН КАРТКИ ТОВАРУ === */
-        .product-detail-card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); display: flex; gap: 40px; align-items: flex-start; }
-        .product-image-box { flex: 0 0 400px; border: 1px solid #eee; padding: 10px; border-radius: 8px; text-align: center; }
-        .product-image-box img { max-width: 100%; max-height: 400px; object-fit: contain; }
-
-        .product-info { flex: 1; }
-        .product-info h2 { font-size: 26px; margin-top: 0; color: #2a2a2a; }
-        .product-meta { font-size: 15px; color: #666; margin-bottom: 20px; }
-        .product-price { font-size: 32px; font-weight: bold; color: #ff4d4d; margin: 20px 0; }
-
-        .buy-action-box { background: #f9f9f9; padding: 20px; border-radius: 8px; display: flex; align-items: center; gap: 20px; border: 1px solid #eee; }
-        .qty-box { display: flex; align-items: center; gap: 10px; font-weight: bold; }
-        .qty-box input { width: 60px; padding: 10px; border: 1px solid #ccc; border-radius: 4px; text-align: center; font-size: 16px; }
-        .btn-add-cart { background: #5cb85c; color: white; border: none; padding: 15px 30px; border-radius: 4px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.2s; flex: 1; }
-        .btn-add-cart:hover { background: #4cae4c; }
-
-        footer { background-color: #1a1a1a; color: #ccc; margin-top: 50px; padding: 40px 20px 20px 20px; }
-    </style>
-</head>
-<body>
-
-    <header>
-        <div class="logo-area">
-            <h1><a href="{% url 'home' %}">🚲 VELOPARTS</a></h1>
-        </div>
-        <div class="contact-wrapper">
-            <div class="info-block"><div class="icon">📞</div><div><strong>Дзвоніть з 09:00 до 18:00</strong>0 (99) 646-18-61</div></div>
-            <div class="info-block"><div class="icon">📍</div><div><strong>Магазин «VeloParts»</strong>м. Луцьк, вул. Соборності, 14</div></div>
-        </div>
-        <div class="cart-btn">🛒 0</div>
-    </header>
-
-    <nav>
-        <div class="nav-links">
-            <a href="{% url 'home' %}">ГОЛОВНА</a>
-            <a href="{% url 'about' %}">ПРО НАС</a>
-        </div>
-    </nav>
-
-    <div class="container">
-        <div class="product-detail-card">
-            <div class="product-image-box">
-                {% if product.image %}
-                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
-                {% else %}
-                    <div style="font-size: 100px; color:#ddd; margin: 100px 0;">🚲</div>
-                {% endif %}
-            </div>
-
-            <div class="product-info">
-                <h2>{{ product.name }}</h2>
-                <div class="product-meta">
-                    ⚙️ Категорія: <strong>{{ product.category.name }}</strong> <br>
-                    🏷️ Бренд: <strong>{{ product.brand.name }}</strong>
-                </div>
-
-                <div style="color: #f39c12; font-size: 20px;">
-                    ★★★★☆ <span style="color: #999; font-size: 14px;">4.5 / 5 (Відгуків: 12)</span>
-                </div>
-
-                <div class="product-price">{{ product.price }} грн</div>
-
-                <div class="buy-action-box">
-                    <div class="qty-box">
-                        Кількість: <input type="number" value="1" min="1">
-                    </div>
-                    <button class="btn-add-cart">🛒 Додати до кошика</button>
-                </div>
-            </div>
-        </div>
+    <!-- Фото -->
+    <div style="flex: 0 0 280px; height: 280px; background: #f9f9f9; border: 1px solid #eee; border-radius: 12px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+        {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+        {% else %}
+            <span style="font-size: 60px;">🚲</span>
+        {% endif %}
     </div>
 
-    <footer>
-        <div style="text-align: center; font-size: 13px; color: #888;">© 2026 Магазин VELOPARTS. Всі права захищено.</div>
-    </footer>
+    <!-- Інфо -->
+    <div style="flex: 1;">
+        <h1 style="font-size: 26px; color: #1a1a2e; margin-bottom: 8px;">{{ product.name }}</h1>
 
-</body>
-</html>
+        {% if product.brand %}
+            <p style="color: #888; margin-bottom: 10px;">Бренд: <strong>{{ product.brand.name }}</strong> | Категорія: {{ product.category.name }}</p>
+        {% endif %}
+
+        <!-- Середній рейтинг -->
+        <div style="display: inline-flex; align-items: center; gap: 10px; background: #f9f9f9; padding: 10px 15px; border-radius: 8px; margin-bottom: 15px;">
+            {% if avg_rating > 0 %}
+                <span style="color: #f1c40f; font-size: 18px;">
+                    {% for i in "12345" %}{% if forloop.counter <= avg_rating %}⭐{% else %}☆{% endif %}{% endfor %}
+                </span>
+                <span style="font-weight: bold; color: #333;">{{ avg_rating }} / 5</span>
+                <span style="color: #777; font-size: 13px;">({{ reviews|length }} відгук{% if reviews|length == 1 %}{% elif reviews|length < 5 %}и{% else %}ів{% endif %})</span>
+            {% else %}
+                <span style="color: #888; font-style: italic;">Ще немає оцінок</span>
+            {% endif %}
+        </div>
+
+        <p style="font-size: 28px; font-weight: 900; color: #ff4d4d; margin-bottom: 15px;">{{ product.price }} грн</p>
+
+        {% if product.description %}
+            <p style="color: #555; line-height: 1.6; margin-bottom: 20px;">{{ product.description }}</p>
+        {% endif %}
+
+        <!-- Кнопка кошика -->
+        <form action="{% url 'add_to_cart' product.id %}" method="post" style="display: flex; align-items: center; gap: 15px; background: #f8f9fa; padding: 15px; border-radius: 8px;">
+            {% csrf_token %}
+            <label style="font-weight: bold;">Кількість:</label>
+            <input type="number" name="quantity" value="1" min="1" max="99" style="width: 65px; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 6px; text-align: center;">
+            <button type="submit" class="btn-buy" style="padding: 11px 24px; width: auto;">🛒 Додати до кошика</button>
+        </form>
+    </div>
+</div>
+
+<!-- ВІДГУКИ -->
+<div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 25px;">
+    <h2 class="section-title">Відгуки покупців</h2>
+    {% if reviews %}
+        {% for review in reviews %}
+        <div style="padding: 18px 0; border-bottom: 1px solid #eee;">
+            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 8px;">
+                <strong style="color: #1a1a2e;">{{ review.author }}</strong>
+                <span style="color: #f1c40f;">
+                    {% for i in "12345" %}{% if forloop.counter <= review.rating %}⭐{% else %}☆{% endif %}{% endfor %}
+                </span>
+                <span style="color: #999; font-size: 12px; margin-left: auto;">{{ review.created_at|date:"d.m.Y" }}</span>
+            </div>
+            <p style="color: #555; line-height: 1.5; margin: 0;">{{ review.text }}</p>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p style="color: #999; font-style: italic; text-align: center; padding: 20px;">Поки що відгуків немає. Будьте першим! 👇</p>
+    {% endif %}
+</div>
+
+<!-- ФОРМА ВІДГУКУ -->
+<div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+    <h2 class="section-title">Написати відгук</h2>
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label class="form-label">{{ form.author.label }}</label>
+            {{ form.author }}
+            {% if form.author.errors %}<span class="form-error">{{ form.author.errors }}</span>{% endif %}
+        </div>
+        <div class="form-group">
+            <label class="form-label">{{ form.text.label }}</label>
+            {{ form.text }}
+            {% if form.text.errors %}<span class="form-error">{{ form.text.errors }}</span>{% endif %}
+        </div>
+        <div class="form-group">
+            <label class="form-label">{{ form.rating.label }}</label>
+            <div class="star-rating-widget">
+                {% for radio in form.rating reversed %}
+                    {{ radio.tag }}
+                    <label for="{{ radio.id_for_label }}" class="star-label">★</label>
+                {% endfor %}
+            </div>
+            {% if form.rating.errors %}<span class="form-error">{{ form.rating.errors }}</span>{% endif %}
+        </div>
+        <button type="submit" class="btn-buy" style="width: auto; padding: 12px 30px;">Надіслати відгук</button>
+    </form>
+</div>
+{% endblock %}

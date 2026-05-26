@@ -1,0 +1,82 @@
+{% extends 'shop/base.html' %}
+{% block title %}Кошик | VeloParts{% endblock %}
+
+{% block content %}
+<h2 class="section-title">🛒 Ваш кошик</h2>
+
+{% if cart|length > 0 %}
+<div class="cart-wrapper">
+    <!-- ТОВАРИ -->
+    <div style="border: 1px solid #eee; border-radius: 8px; overflow: hidden; margin-bottom: 25px;">
+        {% for item in cart %}
+        <div style="display: flex; align-items: center; padding: 20px; border-bottom: 1px solid #eee; gap: 20px;">
+            <!-- Фото -->
+            <div style="width: 80px; flex-shrink: 0; text-align: center;">
+                {% if item.product.image %}
+                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" style="max-width: 80px; max-height: 80px; object-fit: contain;">
+                {% else %}
+                    <span style="font-size: 36px;">🚲</span>
+                {% endif %}
+            </div>
+
+            <!-- Назва -->
+            <div style="flex: 1;">
+                <a href="{% url 'product' item.product.id %}" style="text-decoration: none; color: #1a1a2e; font-weight: bold; font-size: 15px;">{{ item.product.name }}</a>
+            </div>
+
+            <!-- Ціна за 1 -->
+            <div style="text-align: center; min-width: 110px;">
+                <div style="font-size: 17px; color: #333;">{{ item.price }} грн</div>
+                <div style="font-size: 11px; color: #999;">ціна за 1 шт</div>
+            </div>
+
+            <!-- Кількість -->
+            <div>
+                <form action="{% url 'cart_update' item.product.id %}" method="post" style="display: flex; align-items: center; gap: 8px;">
+                    {% csrf_token %}
+                    <button type="button" onclick="const i=this.form.querySelector('input');i.stepDown();this.form.submit();" style="background: none; border: 1px solid #ddd; border-radius: 4px; width: 32px; height: 32px; cursor: pointer; font-size: 18px; color: #555;">&minus;</button>
+                    <input type="number" name="quantity" value="{{ item.quantity }}" min="1" onchange="this.form.submit()" style="width: 50px; text-align: center; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 15px; font-weight: bold;">
+                    <button type="button" onclick="const i=this.form.querySelector('input');i.stepUp();this.form.submit();" style="background: none; border: 1px solid #ddd; border-radius: 4px; width: 32px; height: 32px; cursor: pointer; font-size: 18px; color: #555;">+</button>
+                </form>
+            </div>
+
+            <!-- Сума -->
+            <div style="min-width: 110px; text-align: right; font-size: 17px; font-weight: bold; color: #333;">
+                {{ item.total_price }} грн
+            </div>
+
+            <!-- Видалити -->
+            <div>
+                <form action="{% url 'cart_remove' item.product.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" style="background: none; border: none; color: #e94560; font-size: 22px; cursor: pointer; font-weight: bold;" title="Видалити">&times;</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- ПІДСУМОК -->
+    <div style="display: flex; justify-content: flex-end; align-items: center; gap: 30px; background: #f9f9f9; padding: 20px; border-radius: 8px;">
+        <div style="font-size: 20px; color: #333;">
+            Разом: <strong style="font-size: 32px; color: #ff4d4d; margin-left: 8px;">{{ cart.get_total_price }} грн</strong>
+        </div>
+        <a href="{% url 'checkout' %}" style="background: #e94560; color: white; padding: 15px 35px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 16px; transition: 0.2s;" onmouseover="this.style.background='#c73652'" onmouseout="this.style.background='#e94560'">
+            Оформити замовлення →
+        </a>
+    </div>
+</div>
+
+{% else %}
+<div style="text-align: center; padding: 60px; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+    <p style="font-size: 20px; color: #999; margin-bottom: 20px;">Кошик порожній 🚲</p>
+    <a href="{% url 'home' %}" style="background: #e94560; color: white; padding: 12px 30px; border-radius: 8px; text-decoration: none; font-weight: bold;">До магазину</a>
+</div>
+{% endif %}
+
+<style>
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+    input[type=number] { -moz-appearance: textfield; }
+</style>
+{% endblock %}

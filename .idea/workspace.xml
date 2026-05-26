@@ -4,15 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95282ede-1049-4040-ba5d-325b774d274f" name="Changes" comment="lab 5">
-      <change afterPath="$PROJECT_DIR$/templates/shop/product.html" afterDir="false" />
+    <list default="true" id="95282ede-1049-4040-ba5d-325b774d274f" name="Changes" comment="lab 6">
+      <change afterPath="$PROJECT_DIR$/shop/forms.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shop/signals.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/shop/urls.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/shop/base.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/shop/cart.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VeloParts/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/VeloParts/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/VeloParts/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/VeloParts/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/shop/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/shop/apps.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shop/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/shop/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shop/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/shop/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/shop/about.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/shop/about.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/shop/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/shop/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/shop/product.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/shop/product.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +31,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="HTML File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -118,7 +127,8 @@
       <workItem from="1779811478904" duration="3636000" />
       <workItem from="1779824396665" duration="234000" />
       <workItem from="1779824925944" duration="1258000" />
-      <workItem from="1779826338249" duration="1181000" />
+      <workItem from="1779826338249" duration="3414000" />
+      <workItem from="1779830545804" duration="1262000" />
     </task>
     <task id="LOCAL-00001" summary="lab 3">
       <option name="closed" value="true" />
@@ -144,7 +154,15 @@
       <option name="project" value="LOCAL" />
       <updated>1779826027622</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="lab 6">
+      <option name="closed" value="true" />
+      <created>1779827548295</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1779827548295</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -154,6 +172,7 @@
     <MESSAGE value="lab 3" />
     <MESSAGE value="lab 4" />
     <MESSAGE value="lab 5" />
-    <option name="LAST_COMMIT_MESSAGE" value="lab 5" />
+    <MESSAGE value="lab 6" />
+    <option name="LAST_COMMIT_MESSAGE" value="lab 6" />
   </component>
 </project>
