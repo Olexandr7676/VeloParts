@@ -4,12 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95282ede-1049-4040-ba5d-325b774d274f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/shop/about.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/shop/index.html" afterDir="false" />
+    <list default="true" id="95282ede-1049-4040-ba5d-325b774d274f" name="Changes" comment="lab 3">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/VeloParts/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/VeloParts/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/VeloParts/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/VeloParts/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/shop/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/shop/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,6 +101,9 @@
       </set>
     </attachedChunks>
   </component>
+  <component name="StructureViewState">
+    <option name="selectedTab" value="Logical" />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="95282ede-1049-4040-ba5d-325b774d274f" name="Changes" comment="" />
@@ -109,11 +111,24 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1779811477824</updated>
-      <workItem from="1779811478904" duration="1992000" />
+      <workItem from="1779811478904" duration="3450000" />
     </task>
+    <task id="LOCAL-00001" summary="lab 3">
+      <option name="closed" value="true" />
+      <created>1779813536463</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1779813536463</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="lab 3" />
+    <option name="LAST_COMMIT_MESSAGE" value="lab 3" />
   </component>
 </project>
