@@ -1,26 +1,25 @@
-from decimal import Decimal
 from .models import Product
 
 
 class Cart:
     def __init__(self, request):
         self.session = request.session
-        cart = self.session.get('cart', {})
-        self.cart = cart
+        self.cart = self.session.get('cart', {})
 
+    # ДОДАНО: параметр update_quantity
     def add(self, product, quantity=1, update_quantity=False):
         product_id = str(product.id)
         if product_id not in self.cart:
-            self.cart[product_id] = {'quantity': 0, 'price': str(product.price)}
+            # Зберігаємо ціну як float, щоб уникнути помилок серіалізації
+            self.cart[product_id] = {'quantity': 0, 'price': float(product.price)}
 
+        # ДОДАНО: логіка оновлення кількості для кнопок +/-
         if update_quantity:
             self.cart[product_id]['quantity'] = quantity
         else:
             self.cart[product_id]['quantity'] += quantity
-        self.save()
 
-    def save(self):
-        self.session.modified = True
+        self.save()
 
     def remove(self, product):
         product_id = str(product.id)
@@ -28,24 +27,26 @@ class Cart:
             del self.cart[product_id]
             self.save()
 
+    def save(self):
+        self.session['cart'] = self.cart
+        self.session.modified = True
+
     def __iter__(self):
-        products = Product.objects.filter(id__in=self.cart.keys())
-        products_dict = {str(p.id): p for p in products}
-        for pid, item in self.cart.items():
-            product = products_dict.get(pid)
-            if product:
-                item_copy = item.copy()
-                item_copy['product'] = product
-                item_copy['price'] = Decimal(item['price'])
-                item_copy['total_price'] = item_copy['price'] * item['quantity']
-                yield item_copy
+        product_ids = self.cart.keys()
+        products = Product.objects.filter(id__in=product_ids)
+        for product in products:
+            item = self.cart[str(product.id)].copy()
+            item['product'] = product
+            item['total_price'] = item['price'] * item['quantity']
+            yield item
 
     def __len__(self):
         return sum(item['quantity'] for item in self.cart.values())
 
     def get_total_price(self):
-        return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
+        return sum(item['price'] * item['quantity'] for item in self.cart.values())
 
+    # ДОДАНО: очищення кошика після замовлення
     def clear(self):
         self.session['cart'] = {}
         self.save()

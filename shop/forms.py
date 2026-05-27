@@ -3,7 +3,6 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Review, Newsletter, Profile
 
-
 # --- ФОРМА ВІДГУКУ ---
 class ReviewForm(forms.ModelForm):
     rating = forms.ChoiceField(
@@ -14,12 +13,11 @@ class ReviewForm(forms.ModelForm):
 
     class Meta:
         model = Review
-        fields = ['author', 'text', 'rating']
+        # 'author' видалено, бо тепер ми прив'язуємо відгук до user у views.py
+        fields = ['text', 'rating']
         widgets = {
-            'author': forms.TextInput(attrs={'class': 'form-input', 'placeholder': "Ваше ім'я"}),
             'text': forms.Textarea(attrs={'class': 'form-input', 'placeholder': 'Напишіть ваш відгук...', 'rows': 4}),
         }
-
 
 # --- ФОРМА ПІДПИСКИ ---
 class NewsletterForm(forms.ModelForm):
@@ -33,7 +31,6 @@ class NewsletterForm(forms.ModelForm):
                 'style': 'padding: 8px; border-radius: 4px; border: none; width: 250px;'
             }),
         }
-
 
 # --- ФОРМА РЕЄСТРАЦІЇ ---
 class SignUpForm(UserCreationForm):
@@ -68,42 +65,26 @@ class SignUpForm(UserCreationForm):
             Profile.objects.get_or_create(user=user)
         return user
 
-
 # --- ФОРМА ЗАМОВЛЕННЯ ---
 class OrderForm(forms.Form):
-    last_name = forms.CharField(label="Прізвище",
-                                widget=forms.TextInput(attrs={'placeholder': 'Ваше прізвище', 'class': 'velo-input'}))
-    first_name = forms.CharField(label="Ім'я",
-                                 widget=forms.TextInput(attrs={'placeholder': "Ваше ім'я", 'class': 'velo-input'}))
-    middle_name = forms.CharField(label="По батькові", required=False,
-                                  widget=forms.TextInput(attrs={'placeholder': 'По батькові', 'class': 'velo-input'}))
-    phone = forms.CharField(label="Телефон",
-                            widget=forms.TextInput(attrs={'placeholder': '+380...', 'class': 'velo-input'}))
-    city = forms.CharField(required=False,
-                           widget=forms.TextInput(attrs={'id': 'city-input', 'autocomplete': 'off', 'class': 'velo-input'}))
-    warehouse = forms.CharField(required=False,
-                                widget=forms.HiddenInput(attrs={'id': 'warehouse-final'}))
+    last_name = forms.CharField(label="Прізвище", widget=forms.TextInput(attrs={'placeholder': 'Ваше прізвище', 'class': 'velo-input'}))
+    first_name = forms.CharField(label="Ім'я", widget=forms.TextInput(attrs={'placeholder': "Ваше ім'я", 'class': 'velo-input'}))
+    middle_name = forms.CharField(label="По батькові", required=False, widget=forms.TextInput(attrs={'placeholder': 'По батькові', 'class': 'velo-input'}))
+    phone = forms.CharField(label="Телефон", widget=forms.TextInput(attrs={'placeholder': '+380...', 'class': 'velo-input'}))
+    city = forms.CharField(required=False, widget=forms.TextInput(attrs={'id': 'city-input', 'autocomplete': 'off', 'class': 'velo-input'}))
+    warehouse = forms.CharField(required=False, widget=forms.HiddenInput(attrs={'id': 'warehouse-final'}))
     use_bonuses = forms.BooleanField(required=False, label="Списати бонуси для знижки")
-
 
 # --- ФОРМА ПРОФІЛЮ ---
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['last_name', 'first_name', 'middle_name', 'phone', 'city', 'warehouse']
-        labels = {
-            'last_name': 'Прізвище',
-            'first_name': "Ім'я",
-            'middle_name': 'По батькові',
-            'phone': 'Телефон',
-            'city': 'Місто',
-        }
         widgets = {
-            'last_name': forms.TextInput(attrs={'placeholder': 'Ваше прізвище', 'class': 'velo-input'}),
-            'first_name': forms.TextInput(attrs={'placeholder': "Ваше ім'я", 'class': 'velo-input'}),
+            'last_name': forms.TextInput(attrs={'placeholder': 'Прізвище', 'class': 'velo-input'}),
+            'first_name': forms.TextInput(attrs={'placeholder': "Ім'я", 'class': 'velo-input'}),
             'middle_name': forms.TextInput(attrs={'placeholder': 'По батькові', 'class': 'velo-input'}),
             'phone': forms.TextInput(attrs={'placeholder': '+380...', 'class': 'velo-input'}),
-            'city': forms.TextInput(attrs={'id': 'city-input', 'autocomplete': 'off',
-                                           'placeholder': 'Місто...', 'class': 'velo-input'}),
-            'warehouse': forms.HiddenInput(attrs={'id': 'warehouse-final'}),
+            'city': forms.TextInput(attrs={'placeholder': 'Місто...', 'class': 'velo-input'}),
+            'warehouse': forms.HiddenInput(),
         }

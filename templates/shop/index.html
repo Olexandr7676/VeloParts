@@ -2,6 +2,115 @@
 {% block title %}Головна | VeloParts{% endblock %}
 
 {% block content %}
+<style>
+    /* СІТКА ТОВАРІВ: 3 в ряд */
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 3 рівні колонки */
+        gap: 30px; /* Відстань між товарами */
+        margin-top: 20px;
+        margin-bottom: 40px;
+    }
+
+    /* Адаптивність для телефонів і планшетів */
+    @media (max-width: 900px) { .products-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .products-grid { grid-template-columns: 1fr; } }
+
+    /* КАРТКА ТОВАРУ */
+    .product-card {
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        display: flex;
+        flex-direction: column; /* Щоб вирівняти кнопку по низу */
+        transition: box-shadow 0.3s ease;
+    }
+    .product-card:hover {
+        box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+    /* БЛОК ДЛЯ ФОТО */
+    .product-img-box {
+        height: 220px; /* Фіксована висота, щоб картки були однакові */
+        background: #f8f9fa;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+        overflow: hidden;
+    }
+    .product-img-box img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    /* ЗБІЛЬШЕНИЙ ВЕЛОСИПЕД-ЗАГЛУШКА */
+    .no-img {
+        font-size: 80px; /* Величезний розмір */
+        opacity: 0.5;    /* Трохи прозорий для стилю */
+    }
+
+    /* ТЕКСТ ТА ЦІНА */
+    .product-name {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+        text-decoration: none;
+        margin-bottom: 10px;
+        flex-grow: 1; /* Розтягує назву, штовхаючи ціну і кнопку в самий низ */
+        display: block;
+    }
+    .product-name:hover { color: #e94560; }
+
+    .product-price {
+        font-size: 22px;
+        font-weight: bold;
+        color: #e94560;
+        margin-bottom: 15px;
+    }
+
+    /* КНОПКА */
+    .btn-buy {
+        background: #1a1a2e;
+        color: white;
+        border: none;
+        padding: 12px;
+        width: 100%;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.2s;
+        font-weight: bold;
+    }
+    .btn-buy:hover { background: #e94560; }
+
+    /* ПАГІНАЦІЯ */
+    .pagination {
+        text-align: center;
+        margin-top: 40px;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+    }
+    .pagination a {
+        padding: 10px 15px;
+        background: #f8f9fa;
+        border: 1px solid #ddd;
+        text-decoration: none;
+        color: #333;
+        border-radius: 6px;
+        transition: 0.2s;
+    }
+    .pagination a:hover { background: #e9ecef; }
+    .pagination span { font-weight: bold; }
+</style>
+
 <h2 class="section-title">
     {% if current_category %}{{ current_category.name }}{% else %}Всі товари{% endif %}
 </h2>
@@ -14,12 +123,17 @@
                     {% if product.image %}
                         <img src="{{ product.image.url }}" alt="{{ product.name }}">
                     {% else %}
-                        <span style="font-size: 50px;">🚲</span>
+                        <div class="no-img">🚲</div>
                     {% endif %}
                 </div>
             </a>
-            <a href="{% url 'product' product.id %}" class="product-name">{{ product.name }}</a>
-            <p class="product-price">{{ product.price }} грн</p>
+
+            <a href="{% url 'product' product.id %}" class="product-name">
+                {{ product.name }}
+            </a>
+
+            <p class="product-price">{{ product.price|floatformat:2 }} грн</p>
+
             <form action="{% url 'add_to_cart' product.id %}" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="quantity" value="1">
@@ -27,17 +141,20 @@
             </form>
         </div>
     {% empty %}
-        <p style="color: #999; font-size: 18px; grid-column: 1/-1; text-align: center; padding: 50px;">Товарів немає 🔧</p>
+        <p class="empty-msg" style="grid-column: span 3; text-align: center; font-size: 18px; color: #777;">
+            Товарів поки немає 🔧
+        </p>
     {% endfor %}
 </div>
 
-<!-- Пагінація -->
 {% if products.has_other_pages %}
 <div class="pagination">
     {% if products.has_previous %}
         <a href="?page={{ products.previous_page_number }}">« Назад</a>
     {% endif %}
-    <span class="current">{{ products.number }} / {{ products.paginator.num_pages }}</span>
+
+    <span>{{ products.number }} / {{ products.paginator.num_pages }}</span>
+
     {% if products.has_next %}
         <a href="?page={{ products.next_page_number }}">Вперед »</a>
     {% endif %}

@@ -3,7 +3,7 @@
 
 {% block content %}
 <style>
-    /* Збільшили ширину контейнера (було 900px, стало 1100px) */
+    /* Збільшили ширину контейнера */
     .cart-box {
         background: #fff;
         padding: 30px;
@@ -18,27 +18,32 @@
 
     .col-img { width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; }
     .col-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
     .col-name {
         flex: 1;
         font-size: 16px;
         font-weight: 500;
-
-        /* ЦІ 3 РЯДКИ ВИПРАВЛЯЮТЬ ПРОБЛЕМУ */
+        /* Фікс для довгих назв */
         overflow-wrap: break-word;
         word-break: break-word;
-        padding-right: 15px; /* трохи місця, щоб текст не прилипав до ціни */
+        padding-right: 15px;
     }
+
     .col-price { width: 140px; text-align: center; }
     .col-qty { width: 120px; display: flex; align-items: center; justify-content: center; gap: 5px; }
     .col-total { width: 140px; text-align: right; font-weight: bold; }
     .col-del { width: 40px; text-align: right; }
 
-    .btn-qty { background: #f8f9fa; border: 1px solid #ddd; padding: 4px 10px; cursor: pointer; border-radius: 4px; }
-    .input-qty { width: 40px; text-align: center; border: 1px solid #ddd; padding: 4px; }
+    .btn-qty { background: #f8f9fa; border: 1px solid #ddd; padding: 4px 10px; cursor: pointer; border-radius: 4px; transition: 0.2s; }
+    .btn-qty:hover { background: #e9ecef; }
+
+    /* Ховаємо стандартні стрілочки у поля number для краси */
+    .input-qty { width: 45px; text-align: center; border: 1px solid #ddd; padding: 4px; border-radius: 4px; -moz-appearance: textfield; }
+    .input-qty::-webkit-outer-spin-button, .input-qty::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
     /* Червона кнопка "Оформити" */
     .btn-checkout {
-        background: #e94560; /* Твій червоний колір */
+        background: #e94560;
         color: white;
         padding: 14px 30px;
         text-decoration: none;
@@ -56,8 +61,11 @@
     {% for item in cart %}
     <div class="cart-row">
         <div class="col-img">
-            {% if item.product.image %}<img src="{{ item.product.image.url }}" alt="">
-            {% else %}<span>🚲</span>{% endif %}
+            {% if item.product.image %}
+                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+            {% else %}
+                <span style="font-size: 24px;">🚲</span>
+            {% endif %}
         </div>
 
         <div class="col-name">{{ item.product.name }}</div>
@@ -65,23 +73,31 @@
 
         <form action="{% url 'cart_update' item.product.id %}" method="post" class="col-qty">
             {% csrf_token %}
-            <button type="button" class="btn-qty" onclick="const i=this.form.quantity; i.stepDown(); this.form.submit();">-</button>
-            <input type="number" class="input-qty" name="quantity" value="{{ item.quantity }}" min="1" onchange="this.form.submit()">
-            <button type="button" class="btn-qty" onclick="const i=this.form.quantity; i.stepUp(); this.form.submit();">+</button>
+            <button type="button" class="btn-qty" onclick="this.form.querySelector('.input-qty').stepDown(); this.form.submit();">-</button>
+            <input type="number" class="input-qty" name="quantity" value="{{ item.quantity }}" min="1" max="99" onchange="this.form.submit();">
+            <button type="button" class="btn-qty" onclick="this.form.querySelector('.input-qty').stepUp(); this.form.submit();">+</button>
         </form>
 
         <div class="col-total">{{ item.total_price|floatformat:2 }} грн</div>
 
         <form action="{% url 'cart_remove' item.product.id %}" method="post" class="col-del">
             {% csrf_token %}
-            <button type="submit" style="background:none; border:none; color:red; font-size:20px; cursor:pointer;">&times;</button>
+            <button type="submit" style="background:none; border:none; color:#ff4d4d; font-size:24px; cursor:pointer;" title="Видалити">&times;</button>
         </form>
+    </div>
+
+    {% empty %}
+    <div style="text-align: center; padding: 40px;">
+        <p style="font-size: 16px; color: #555;">Ваш кошик порожній.</p>
+        <a href="{% url 'home' %}" style="color: #e94560; font-weight: bold; text-decoration: none; margin-top: 10px; display: inline-block;">Повернутися до покупок</a>
     </div>
     {% endfor %}
 
+    {% if cart %}
     <div style="text-align: right; margin-top: 25px;">
         <h3 style="margin-bottom: 20px;">Разом: {{ cart.get_total_price|floatformat:2 }} грн</h3>
         <a href="{% url 'checkout' %}" class="btn-checkout">Оформити замовлення</a>
     </div>
+    {% endif %}
 </div>
 {% endblock %}

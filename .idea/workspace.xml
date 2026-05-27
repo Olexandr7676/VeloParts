@@ -5,28 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="95282ede-1049-4040-ba5d-325b774d274f" name="Changes" comment="lab 7">
-      <change afterPath="$PROJECT_DIR$/shop/cart.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/shop/cabinet.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/shop/checkout.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/shop/contacts.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/shop/how_to_order.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/shop/login.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/shop/password_reset.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/shop/password_reset_complete.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/shop/password_reset_confirm.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/shop/password_reset_done.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/shop/password_reset_subject.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/shop/payment.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/shop/signup.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/VeloParts/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/VeloParts/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/shop/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/shop/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/cart.py" beforeDir="false" afterPath="$PROJECT_DIR$/shop/cart.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shop/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/shop/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shop/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/shop/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shop/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/shop/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shop/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/shop/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/shop/about.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/shop/about.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/shop/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/shop/base.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/shop/cart.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/shop/cart.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/shop/checkout.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/shop/checkout.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/shop/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/shop/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/shop/password_reset.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/shop/password_reset.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/shop/password_reset_confirm.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/shop/password_reset_confirm.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -135,7 +126,9 @@
       <workItem from="1779824925944" duration="1258000" />
       <workItem from="1779826338249" duration="3414000" />
       <workItem from="1779830545804" duration="8089000" />
-      <workItem from="1779838983143" duration="1613000" />
+      <workItem from="1779838983143" duration="4083000" />
+      <workItem from="1779843487618" duration="3788000" />
+      <workItem from="1779858335646" duration="5030000" />
     </task>
     <task id="LOCAL-00001" summary="lab 3">
       <option name="closed" value="true" />
@@ -177,7 +170,15 @@
       <option name="project" value="LOCAL" />
       <updated>1779831830132</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="lab 7">
+      <option name="closed" value="true" />
+      <created>1779840624310</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1779840624310</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

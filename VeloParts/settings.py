@@ -94,3 +94,13 @@ PASSWORD_RESET_TIMEOUT = 86400
 
 SESSION_COOKIE_DOMAIN = None
 SESSION_SAVE_EVERY_REQUEST = True
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'kriskolok2@gmail.com'
+# Сюди встав свій 16-значний код без пробілів (наприклад, abcd efgh ijkl mnop -> abcdefghijklmnop)
+EMAIL_HOST_PASSWORD = 'uebxbldihlnzcbsc'
+DEFAULT_FROM_EMAIL = 'VeloParts Support <kriskolok2@gmail.com>'
+SESSION_ENGINE = 'django.contrib.sessions.backends.file'

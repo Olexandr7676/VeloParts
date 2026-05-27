@@ -1,142 +1,402 @@
 {% extends 'shop/base.html' %}
-{% block title %}Оформлення | VeloParts{% endblock %}
+{% block title %}Оформлення замовлення | VeloParts{% endblock %}
 
 {% block content %}
-<h2 class="section-title">🛒 Оформлення замовлення</h2>
+<style>
+    /* ПРИХОВУЄМО ВСЕ ЗАЙВЕ */
+    header, .header, .site-header, nav, .navbar, .top-bar, footer, .footer, .site-footer {
+        display: none !important;
+    }
 
-<div style="display: grid; grid-template-columns: 1fr 1.4fr; gap: 30px;">
+    body { background-color: #f8f9fa; }
 
-    <!-- ЛІВО: СПИСОК ТОВАРІВ -->
-    <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); height: fit-content;">
-        <h3 style="margin-top: 0; color: #1a1a2e; border-left: 4px solid #e94560; padding-left: 12px; margin-bottom: 20px;">Ваше замовлення</h3>
+    /* Наша власна міні-шапка */
+    .checkout-header {
+        text-align: center;
+        padding: 30px 0;
+        margin-bottom: 20px;
+    }
+    .checkout-logo {
+        font-size: 28px;
+        font-weight: 900;
+        color: #1a1a2e;
+        text-decoration: none;
+        letter-spacing: 1px;
+    }
+    .checkout-logo span { color: #e94560; }
+
+    /* ОДНА КОЛОНКА В ЦЕНТРІ */
+    .checkout-wrapper {
+        max-width: 600px;
+        margin: 0 auto 50px auto;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .checkout-box {
+        background: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        border: 1px solid #eaeaea;
+    }
+
+    .section-title {
+        font-size: 18px;
+        font-weight: bold;
+        color: #1a1a2e;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 15px;
+    }
+
+    .summary-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 15px 0;
+        border-bottom: 1px dashed #eee;
+    }
+
+    .summary-img-box {
+        width: 55px;
+        height: 55px;
+        background: #f4f4f4;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border: 1px solid #eaeaea;
+        overflow: hidden;
+    }
+
+    .summary-img-box img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .summary-no-img {
+        font-size: 24px;
+        opacity: 0.4;
+    }
+
+    .summary-details {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .summary-name {
+        color: #1a1a2e;
+        font-weight: 600;
+        font-size: 15px;
+        margin-bottom: 4px;
+    }
+
+    .summary-qty {
+        color: #888;
+        font-size: 13px;
+    }
+
+    .summary-price {
+        font-weight: bold;
+        color: #e94560;
+        font-size: 16px;
+        white-space: nowrap;
+    }
+
+    .summary-total {
+        display: flex;
+        justify-content: space-between;
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 25px;
+        color: #1a1a2e;
+        background: #fafafa;
+        padding: 15px;
+        border-radius: 8px;
+    }
+    .summary-total span.price { color: #e94560; }
+
+    /* Стилі для форми */
+    .form-row { display: flex; gap: 15px; margin-bottom: 15px; }
+
+    @media (max-width: 500px) {
+        .form-row { flex-direction: column; }
+    }
+
+    .form-group { flex: 1; display: flex; flex-direction: column; margin-bottom: 15px; position: relative; }
+    .form-group label { font-size: 14px; color: #555; margin-bottom: 5px; font-weight: 600; }
+
+    /* Робимо всі інпути красивими */
+    .form-group input, .form-group select, .form-group textarea {
+        padding: 14px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 15px;
+        outline: none;
+        transition: 0.2s;
+        width: 100%;
+        box-sizing: border-box;
+        background-color: #fff;
+    }
+
+    .form-group input:focus, .form-group select:focus { border-color: #e94560; }
+
+    /* НОВИЙ КРАСИВИЙ ВИПАДАЮЧИЙ СПИСОК МІСТ */
+    .custom-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border: 1px solid #ddd;
+        border-top: none;
+        border-radius: 0 0 6px 6px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        max-height: 250px;
+        overflow-y: auto;
+        z-index: 1000;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: none; /* Сховано по замовчуванню */
+    }
+
+    .custom-dropdown li {
+        padding: 12px 14px;
+        cursor: pointer;
+        border-bottom: 1px solid #f9f9f9;
+        font-size: 15px;
+        color: #333;
+        transition: 0.2s;
+    }
+
+    .custom-dropdown li:last-child {
+        border-bottom: none;
+    }
+
+    .custom-dropdown li:hover {
+        background-color: #f1f5f9;
+        color: #e94560;
+    }
+
+    .btn-submit {
+        background: #e94560;
+        color: white;
+        border: none;
+        padding: 18px;
+        width: 100%;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.2s;
+        margin-top: 20px;
+        text-transform: uppercase;
+    }
+    .btn-submit:hover { background: #d3304a; }
+
+    .back-link {
+        display: inline-block;
+        margin-top: 20px;
+        color: #666;
+        text-decoration: none;
+        font-size: 14px;
+        transition: 0.2s;
+        text-align: center;
+        width: 100%;
+    }
+    .back-link:hover { color: #e94560; }
+</style>
+
+<div class="checkout-header">
+    <a href="{% url 'home' %}" class="checkout-logo">VELO<span>PARTS</span></a>
+</div>
+
+<div class="checkout-wrapper">
+
+    <div class="checkout-box">
+        <h3 class="section-title">Ваше замовлення</h3>
+
         {% for item in cart %}
-        <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dashed #eee; align-items: center;">
-            <div>
-                <span style="font-weight: 600;">{{ item.product.name }}</span><br>
-                <span style="font-size: 12px; color: #888;">{{ item.quantity }} шт × {{ item.price }} грн</span>
+        <div class="summary-item">
+            <div class="summary-img-box">
+                {% if item.product.image %}
+                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                {% else %}
+                    <span class="summary-no-img">🚲</span>
+                {% endif %}
             </div>
-            <span style="font-weight: bold; color: #e94560;">{{ item.total_price }} грн</span>
+            <div class="summary-details">
+                <span class="summary-name">{{ item.product.name }}</span>
+                <span class="summary-qty">{{ item.quantity }} шт × {{ item.price|floatformat:2 }} грн</span>
+            </div>
+            <div class="summary-price">{{ item.total_price|floatformat:2 }} грн</div>
         </div>
         {% endfor %}
-        <div style="text-align: right; margin-top: 20px; font-size: 20px; font-weight: 900; color: #1a1a2e;">
-            До сплати: <span id="total-display" style="color: #ff4d4d;">{{ cart.get_total_price }} грн</span>
+
+        <div class="summary-total">
+            <span>До сплати:</span>
+            <span class="price">{{ cart.get_total_price|floatformat:2 }} грн</span>
         </div>
     </div>
 
-    <!-- ПРАВО: ФОРМА -->
-    <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
-        <form method="post" action="{% url 'checkout' %}">
+    <div class="checkout-box">
+        <form action="{% url 'checkout' %}" method="post">
             {% csrf_token %}
 
-            <h3 style="margin-top: 0; color: #1a1a2e; border-left: 4px solid #e94560; padding-left: 12px; margin-bottom: 20px;">👤 Дані отримувача</h3>
-
-            <div style="display: flex; gap: 15px; margin-bottom: 15px;">
-                <div style="flex: 1;">
-                    <label style="display: block; font-size: 13px; font-weight: bold; color: #555; margin-bottom: 5px;">Прізвище:*</label>
-                    <input type="text" name="last_name" required class="velo-input" placeholder="Прізвище" value="{{ profile.last_name|default:'' }}">
+            <h3 class="section-title">👤 Дані отримувача</h3>
+            <div class="form-row">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label>Прізвище:*</label>
+                    {{ form.last_name }}
                 </div>
-                <div style="flex: 1;">
-                    <label style="display: block; font-size: 13px; font-weight: bold; color: #555; margin-bottom: 5px;">Ім'я:*</label>
-                    <input type="text" name="first_name" required class="velo-input" placeholder="Ім'я" value="{{ profile.first_name|default:'' }}">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label>Ім'я:*</label>
+                    {{ form.first_name }}
                 </div>
             </div>
-
-            <div style="margin-bottom: 15px;">
-                <label style="display: block; font-size: 13px; font-weight: bold; color: #555; margin-bottom: 5px;">Телефон:*</label>
-                <input type="text" name="phone" required class="velo-input" placeholder="+380..." value="{{ profile.phone|default:'' }}">
+            <div class="form-group" style="margin-bottom: 30px;">
+                <label>Телефон:*</label>
+                {{ form.phone }}
             </div>
 
-            <h3 style="color: #1a1a2e; border-left: 4px solid #e94560; padding-left: 12px; margin-bottom: 20px;">🚚 Доставка (Нова Пошта)</h3>
+            <h3 class="section-title">🚚 Доставка (Нова Пошта)</h3>
 
-            <div style="position: relative; margin-bottom: 15px;">
-                <label style="display: block; font-size: 13px; font-weight: bold; color: #555; margin-bottom: 5px;">Місто:*</label>
-                <input type="text" id="city-input" name="city" required class="velo-input" placeholder="Почніть вводити..." autocomplete="off" value="{{ profile.city|default:'' }}">
-                <div id="city-suggestions" style="position:absolute;top:100%;left:0;right:0;background:white;border:1px solid #ddd;border-radius:6px;z-index:1000;max-height:200px;overflow-y:auto;box-shadow:0 4px 10px rgba(0,0,0,0.1);"></div>
+            <div class="form-group">
+                <label>Місто:*</label>
+                <input type="text" name="city" id="id_city" placeholder="Почніть вводити місто..." required autocomplete="off">
+                <ul id="custom-city-dropdown" class="custom-dropdown"></ul>
             </div>
 
-            <div style="margin-bottom: 25px;">
-                <label style="display: block; font-size: 13px; font-weight: bold; color: #555; margin-bottom: 5px;">Відділення:*</label>
-                <select id="warehouse-select" style="width:100%;" class="velo-input">
-                    {% if profile.warehouse %}
-                        <option value="{{ profile.warehouse }}">{{ profile.warehouse }}</option>
-                    {% else %}
-                        <option value="">Спочатку оберіть місто</option>
-                    {% endif %}
+            <div class="form-group">
+                <label>Поштовий індекс:*</label>
+                {% if form.zip_code %}
+                    {{ form.zip_code }}
+                {% else %}
+                    <input type="text" name="zip_code" placeholder="Наприклад: 43000" required>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label>Відділення:*</label>
+                <select name="warehouse" id="id_warehouse" required>
+                    <option value="" selected disabled>Спочатку оберіть місто...</option>
                 </select>
-                <input type="hidden" name="warehouse" id="warehouse-final" value="{{ profile.warehouse|default:'' }}">
             </div>
 
-            <!-- БОНУСИ -->
-            {% if profile.bonuses > 0 %}
-            <div style="background: #fff8f0; border: 1px solid #ffc107; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 15px;">
-                    <input type="checkbox" id="bonus-check" name="use_bonuses" style="width:20px;height:20px;accent-color:#e94560;">
-                    <span>🎁 Списати <strong>{{ profile.bonuses }} грн</strong> бонусів</span>
-                </label>
-            </div>
-            {% endif %}
-
-            <button type="submit" style="width:100%;padding:18px;background:#e94560;color:white;border:none;border-radius:8px;font-size:18px;font-weight:bold;cursor:pointer;transition:0.2s;" onmouseover="this.style.background='#c73652'" onmouseout="this.style.background='#e94560'">
-                ОФОРМИТИ ЗАМОВЛЕННЯ
-            </button>
+            <button type="submit" class="btn-submit">ОФОРМИТИ ЗАМОВЛЕННЯ</button>
         </form>
+        <a href="{% url 'cart' %}" class="back-link">← Повернутися до кошика</a>
     </div>
+
 </div>
 
 <script>
-const NP_KEY = 'ef34fa4b35c537da8e0bb566d299b288';
-const NP_URL = 'https://api.novaposhta.ua/v2.0/json/';
-const cityInput = document.getElementById('city-input');
-const suggestions = document.getElementById('city-suggestions');
-const whSelect = document.getElementById('warehouse-select');
-const whFinal = document.getElementById('warehouse-final');
+document.addEventListener("DOMContentLoaded", function() {
+    const apiKey = "ef34fa4b35c537da8e0bb566d299b288";
 
-cityInput.addEventListener('input', async (e) => {
-    const q = e.target.value.trim();
-    if (q.length < 2) { suggestions.innerHTML = ''; return; }
-    try {
-        const r = await fetch(NP_URL, { method: 'POST', body: JSON.stringify({ apiKey: NP_KEY, modelName: 'Address', calledMethod: 'searchSettlements', methodProperties: { CityName: q, Limit: 7 } }) });
-        const d = await r.json();
-        if (d.success && d.data[0]?.Addresses?.length) {
-            suggestions.innerHTML = d.data[0].Addresses.map(a => `<div class="np-item" data-ref="${a.DeliveryCity}" style="padding:12px;cursor:pointer;border-bottom:1px solid #f5f5f5;font-size:14px;"><strong>${a.MainDescription}</strong> <small>(${a.Area} обл.)</small></div>`).join('');
+    const cityInput = document.getElementById("id_city");
+    const customCityDropdown = document.getElementById("custom-city-dropdown");
+    const warehouseSelect = document.getElementById("id_warehouse");
+
+    let citiesData = {};
+    let typingTimer;
+
+    // Закриваємо випадаючий список, якщо клікнути десь на сторінці
+    document.addEventListener("click", function(e) {
+        if (e.target !== cityInput && e.target !== customCityDropdown) {
+            customCityDropdown.style.display = "none";
         }
-    } catch(e){}
-});
+    });
 
-suggestions.addEventListener('click', (e) => {
-    const item = e.target.closest('.np-item');
-    if (item) {
-        cityInput.value = item.querySelector('strong').innerText;
-        suggestions.innerHTML = '';
-        loadWH(item.dataset.ref);
+    // Шукаємо місто під час вводу
+    cityInput.addEventListener("input", function() {
+        clearTimeout(typingTimer);
+        const cityName = cityInput.value.trim();
+
+        if (cityName.length < 2) {
+            customCityDropdown.style.display = "none";
+            return;
+        }
+
+        typingTimer = setTimeout(() => {
+            fetch("https://api.novaposhta.ua/v2.0/json/", {
+                method: "POST",
+                body: JSON.stringify({
+                    apiKey: apiKey,
+                    modelName: "Address",
+                    calledMethod: "getCities",
+                    methodProperties: { FindByString: cityName, Limit: "10" }
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                customCityDropdown.innerHTML = "";
+
+                if (data.success && data.data.length > 0) {
+                    customCityDropdown.style.display = "block"; // Показуємо меню
+
+                    data.data.forEach(city => {
+                        const fullCityName = `${city.Description}, ${city.AreaDescription} обл.`;
+
+                        // Створюємо елемент списку
+                        const li = document.createElement("li");
+                        li.textContent = fullCityName;
+
+                        // Що відбувається, коли користувач клікає на місто
+                        li.addEventListener("click", function() {
+                            cityInput.value = fullCityName; // Вписуємо в інпут
+                            customCityDropdown.style.display = "none"; // Ховаємо список
+                            loadWarehouses(city.Ref); // Підвантажуємо відділення
+                        });
+
+                        customCityDropdown.appendChild(li);
+                    });
+                } else {
+                    customCityDropdown.style.display = "none";
+                }
+            });
+        }, 400);
+    });
+
+    // Завантажуємо відділення
+    function loadWarehouses(cityRef) {
+        warehouseSelect.innerHTML = '<option value="">Завантаження відділень...</option>';
+        warehouseSelect.disabled = true; // Блокуємо на секунду, поки вантажить
+
+        fetch("https://api.novaposhta.ua/v2.0/json/", {
+            method: "POST",
+            body: JSON.stringify({
+                apiKey: apiKey,
+                modelName: "Address",
+                calledMethod: "getWarehouses",
+                methodProperties: { CityRef: cityRef }
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            warehouseSelect.innerHTML = '<option value="" selected disabled>Оберіть відділення...</option>';
+            warehouseSelect.disabled = false; // Розблоковуємо
+
+            if (data.success) {
+                data.data.forEach(wh => {
+                    const option = document.createElement("option");
+                    option.value = wh.Description;
+                    option.textContent = wh.Description;
+                    warehouseSelect.appendChild(option);
+                });
+            }
+        });
     }
 });
-
-async function loadWH(ref) {
-    whSelect.innerHTML = '<option>⏳ Завантаження...</option>';
-    try {
-        const r = await fetch(NP_URL, { method: 'POST', body: JSON.stringify({ apiKey: NP_KEY, modelName: 'Address', calledMethod: 'getWarehouses', methodProperties: { CityRef: ref } }) });
-        const d = await r.json();
-        if (d.success && d.data.length) {
-            whSelect.innerHTML = d.data.map(w => `<option value="${w.Description}">${w.Description}</option>`).join('');
-            whFinal.value = whSelect.value;
-        }
-    } catch(e){}
-}
-
-whSelect.addEventListener('change', () => { whFinal.value = whSelect.value; });
-document.addEventListener('click', (e) => { if (e.target !== cityInput) suggestions.innerHTML = ''; });
-
-// Динамічний перерахунок з бонусами
-const bonusCheck = document.getElementById('bonus-check');
-const totalDisplay = document.getElementById('total-display');
-if (bonusCheck && totalDisplay) {
-    const origTotal = parseFloat("{{ cart.get_total_price }}") || 0;
-    const bonuses = parseFloat("{{ profile.bonuses }}") || 0;
-    bonusCheck.addEventListener('change', () => {
-        const final = bonusCheck.checked ? Math.max(0, origTotal - bonuses) : origTotal;
-        totalDisplay.textContent = final.toFixed(2) + ' грн';
-    });
-}
 </script>
+
 {% endblock %}
