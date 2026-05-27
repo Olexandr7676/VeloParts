@@ -1,0 +1,47 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}Вхід | VeloParts{% endblock %}
+
+{% block content %}
+<div class="auth-card">
+    <div class="auth-icon">🚲</div>
+    <h2 class="auth-title">Вхід в кабінет</h2>
+    <p class="auth-subtitle">Раді бачити вас знову!</p>
+
+    {% if form.non_field_errors %}
+        <div style="background: #f8d7da; color: #721c24; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; text-align: left; border-left: 4px solid #dc3545;">
+            {{ form.non_field_errors.0 }}
+        </div>
+    {% endif %}
+
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label class="form-label" for="id_username">Ім'я користувача</label>
+            <input type="text" name="username" id="id_username" class="form-input" placeholder="Введіть ваш логін" required autofocus>
+            {% if form.username.errors %}
+                <span class="form-error">{{ form.username.errors.0 }}</span>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="id_password">Пароль</label>
+            <input type="password" name="password" id="id_password" class="form-input" placeholder="Введіть ваш пароль" required>
+            {% if form.password.errors %}
+                <span class="form-error">{{ form.password.errors.0 }}</span>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn-auth">Увійти</button>
+    </form>
+
+    <div class="auth-switch" style="margin-top: 20px;">
+        <a href="{% url 'password_reset' %}" style="color: #888; font-weight: normal; font-size: 13px;">Забули пароль?</a>
+    </div>
+
+    <div class="auth-switch" style="margin-top: 15px;">
+        Немає акаунту? <a href="{% url 'signup' %}">Зареєструватись</a>
+    </div>
+</div>
+{% endblock %}

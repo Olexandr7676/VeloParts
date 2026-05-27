@@ -1,0 +1,227 @@
+{% extends 'shop/base.html' %}
+{% block title %}Кабінет | VeloParts{% endblock %}
+
+{% block content %}
+
+<!-- ШАПКА КАБІНЕТУ -->
+<div style="background: white; padding: 25px 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 5px solid #e94560; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 25px;">
+    <div style="display: flex; align-items: center; gap: 15px;">
+        <span style="font-size: 36px;">{% if user.is_staff %}⚙️{% else %}👤{% endif %}</span>
+        <div>
+            <h1 style="margin: 0; font-size: 22px; color: #1a1a2e; font-weight: 800;">
+                {% if user.is_staff %}Адмін-панель{% else %}Мій кабінет{% endif %}
+            </h1>
+            <p style="margin: 4px 0 0 0; color: #e94560; font-weight: bold;">@{{ user.first_name|default:user.username }}</p>
+        </div>
+    </div>
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" style="background: #e94560; color: white; padding: 10px 22px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px;">🚪 Вийти</button>
+    </form>
+</div>
+
+<!-- БЛОКИ (ТІЛЬКИ ДЛЯ КЛІЄНТА) -->
+{% if not user.is_staff %}
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 30px;">
+
+    <!-- БОНУСИ -->
+    {% if profile %}
+    <div style="background: linear-gradient(135deg, #fff8f0, #fff3dc); border: 2px solid #fce28b; padding: 25px; border-radius: 12px;">
+        <h3 style="margin-top: 0; color: #c0392b;">✨ Ваші бонуси</h3>
+        <div style="font-size: 38px; font-weight: 900; color: #e67e22; margin-bottom: 5px;">🎁 {{ profile.bonuses }} <span style="font-size: 18px;">грн</span></div>
+        <p style="color: #888; font-size: 13px; margin-bottom: 15px;">доступно для оплати</p>
+        <div style="background: #e0e0e0; border-radius: 10px; height: 10px; overflow: hidden; margin-bottom: 8px;">
+            <div style="background: linear-gradient(90deg, #e94560, #f39c12); height: 100%; width: {% if profile.bonuses >= 500 %}100{% else %}{{ profile.bonuses }}{% endif %}%;"></div>
+        </div>
+        {% if profile.bonuses < 500 %}
+            <p style="font-size: 12px; color: #888; margin: 0;">💡 Накопичуйте бонуси — при 500 грн VIP-знижка 10%!</p>
+        {% else %}
+            <p style="font-size: 13px; color: #c0392b; font-weight: bold; margin: 0;">🏆 VIP статус активовано!</p>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- ДАНІ ПРОФІЛЮ -->
+    <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 4px solid #e94560;">
+        <h3 style="margin-top: 0; color: #1a1a2e;">⚙️ Дані для доставки</h3>
+        <p style="font-size: 13px; color: #999; margin-bottom: 15px;">Заповніть, щоб не вводити щоразу при замовленні.</p>
+        <form method="post" action="{% url 'cabinet' %}">
+            {% csrf_token %}
+            <div style="display: flex; gap: 10px; margin-bottom: 12px;">
+                <div style="flex:1;">{{ profile_form.last_name }}</div>
+                <div style="flex:1;">{{ profile_form.first_name }}</div>
+            </div>
+            <div style="margin-bottom: 12px;">{{ profile_form.phone }}</div>
+            <div style="position: relative; margin-bottom: 12px;">
+                {{ profile_form.city }}
+                <div id="city-suggestions" style="position:absolute;top:100%;left:0;right:0;background:white;border:1px solid #ddd;border-radius:6px;z-index:1000;max-height:200px;overflow-y:auto;box-shadow:0 4px 10px rgba(0,0,0,0.1);"></div>
+            </div>
+            <div style="margin-bottom: 15px;">
+                <select id="warehouse-select" class="velo-input">
+                    {% if profile.warehouse %}
+                        <option value="{{ profile.warehouse }}">{{ profile.warehouse }}</option>
+                    {% else %}
+                        <option value="">Спочатку оберіть місто</option>
+                    {% endif %}
+                </select>
+                {{ profile_form.warehouse }}
+            </div>
+            <button type="submit" style="width:100%;background:#e94560;color:white;padding:13px;border:none;border-radius:8px;font-weight:bold;font-size:15px;cursor:pointer;">💾 ЗБЕРЕГТИ</button>
+        </form>
+    </div>
+</div>
+{% endif %}
+
+<!-- ТАБЛИЦЯ ЗАМОВЛЕНЬ -->
+<div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+    <h2 style="margin-top: 0; color: #1a1a2e; border-bottom: 3px solid #e94560; padding-bottom: 12px; margin-bottom: 20px;">
+        {% if user.is_staff %}📦 Всі замовлення{% else %}🛒 Мої замовлення{% endif %}
+    </h2>
+
+    <!-- ФІЛЬТР (тільки для адміна) -->
+    {% if user.is_staff %}
+    <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
+        <a href="{% url 'cabinet' %}" style="padding:8px 18px;border-radius:20px;text-decoration:none;font-size:13px;font-weight:bold;{% if not current_status_filter %}background:#1a1a2e;color:white;{% else %}background:#eee;color:#555;{% endif %}">Усі</a>
+        <a href="{% url 'cabinet' %}?status=new" style="padding:8px 18px;border-radius:20px;text-decoration:none;font-size:13px;font-weight:bold;{% if current_status_filter == 'new' %}background:#e94560;color:white;{% else %}background:#eee;color:#555;{% endif %}">🆕 Нові</a>
+        <a href="{% url 'cabinet' %}?status=sent" style="padding:8px 18px;border-radius:20px;text-decoration:none;font-size:13px;font-weight:bold;{% if current_status_filter == 'sent' %}background:#e67e22;color:white;{% else %}background:#eee;color:#555;{% endif %}">🚚 Відправлені</a>
+        <a href="{% url 'cabinet' %}?status=done" style="padding:8px 18px;border-radius:20px;text-decoration:none;font-size:13px;font-weight:bold;{% if current_status_filter == 'done' %}background:#27ae60;color:white;{% else %}background:#eee;color:#555;{% endif %}">✅ Виконані</a>
+    </div>
+    {% endif %}
+
+    {% if orders %}
+    <div style="overflow-x:auto;">
+    <table style="width:100%;border-collapse:separate;border-spacing:0;text-align:left;min-width:700px;">
+        <thead>
+            <tr style="background:linear-gradient(90deg,#1a1a2e,#e94560);color:white;">
+                <th style="padding:14px;border-radius:8px 0 0 0;"># / Дата</th>
+                {% if user.is_staff %}<th style="padding:14px;">👤 Покупець</th>{% endif %}
+                <th style="padding:14px;">🚚 Доставка</th>
+                <th style="padding:14px;">💰 Сума</th>
+                <th style="padding:14px;">🏷️ Статус</th>
+                {% if user.is_staff %}<th style="padding:14px;border-radius:0 8px 0 0;">⚙️ Дія</th>{% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr style="background:{% cycle '#fff' '#fafafa' %};">
+                <td style="padding:18px 14px;border-bottom:1px solid #eee;">
+                    <div style="font-weight:800;color:#1a1a2e;">№{{ order.id }}</div>
+                    <div style="color:#999;font-size:12px;">{{ order.created_at|date:"d.m.Y H:i" }}</div>
+                </td>
+                {% if user.is_staff %}
+                <td style="padding:18px 14px;border-bottom:1px solid #eee;">
+                    <strong style="color:#2980b9;">{{ order.first_name }} {{ order.last_name }}</strong><br>
+                    <span style="color:#e67e22;font-size:13px;">📞 {{ order.phone }}</span>
+                </td>
+                {% endif %}
+                <td style="padding:18px 14px;border-bottom:1px solid #eee;">
+                    <div style="font-size:13px;font-weight:bold;">📍 {{ order.city }}</div>
+                    <div style="font-size:12px;color:#555;background:#f0f0f0;padding:3px 8px;border-radius:4px;display:inline-block;margin-top:4px;">{{ order.warehouse }}</div>
+                </td>
+                <td style="padding:18px 14px;border-bottom:1px solid #eee;">
+                    <strong style="color:#e94560;font-size:17px;">{{ order.total_price }} ₴</strong>
+                </td>
+                <td style="padding:18px 14px;border-bottom:1px solid #eee;">
+                    <span style="padding:5px 12px;border-radius:20px;font-size:12px;font-weight:800;
+                        {% if order.status == 'new' %}background:#ebf5fb;color:#2980b9;
+                        {% elif order.status == 'sent' %}background:#fdf2e9;color:#d35400;
+                        {% else %}background:#e9f7ef;color:#27ae60;{% endif %}">
+                        {{ order.get_status_display|upper }}
+                    </span>
+                </td>
+                {% if user.is_staff %}
+                <td style="padding:18px 14px;border-bottom:1px solid #eee;">
+                    <form method="post" action="{% url 'order_change_status' order.id %}">
+                        {% csrf_token %}
+                        <select name="status" onchange="this.form.submit()" style="padding:7px;border-radius:6px;border:1px solid #ddd;cursor:pointer;font-size:13px;">
+                            <option value="new"  {% if order.status == 'new'  %}selected{% endif %}>Нове</option>
+                            <option value="sent" {% if order.status == 'sent' %}selected{% endif %}>Відправлено</option>
+                            <option value="done" {% if order.status == 'done' %}selected{% endif %}>Виконано</option>
+                        </select>
+                    </form>
+                </td>
+                {% endif %}
+            </tr>
+            <tr>
+                <td colspan="{% if user.is_staff %}6{% else %}4{% endif %}" style="padding:8px 14px 16px;background:#fafafa;border-bottom:2px solid #eee;">
+                    <span style="font-size:12px;color:#999;">Товари: </span>
+                    {% for item in order.items.all %}
+                        <span style="background:#fff0f1;color:#e94560;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:bold;margin:2px;display:inline-block;">🚲 {{ item.product.name }} ×{{ item.quantity }}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+
+    <!-- ПАГІНАЦІЯ -->
+    {% if orders.has_other_pages %}
+    <div class="pagination" style="margin-top:20px;">
+        {% if orders.has_previous %}<a href="?page={{ orders.previous_page_number }}{% if current_status_filter %}&status={{ current_status_filter }}{% endif %}">«</a>{% endif %}
+        {% for num in orders.paginator.page_range %}
+            {% if orders.number == num %}
+                <span class="current">{{ num }}</span>
+            {% else %}
+                <a href="?page={{ num }}{% if current_status_filter %}&status={{ current_status_filter }}{% endif %}">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+        {% if orders.has_next %}<a href="?page={{ orders.next_page_number }}{% if current_status_filter %}&status={{ current_status_filter }}{% endif %}">»</a>{% endif %}
+    </div>
+    {% endif %}
+
+    {% else %}
+        <p style="text-align:center;color:#999;padding:30px;">Замовлень ще немає.</p>
+    {% endif %}
+</div>
+
+<!-- НОВА ПОШТА JS -->
+<script>
+const NP_KEY = 'ef34fa4b35c537da8e0bb566d299b288';
+const NP_URL = 'https://api.novaposhta.ua/v2.0/json/';
+const cityInput = document.querySelector('input[name="city"]');
+const suggestionsBox = document.getElementById('city-suggestions');
+const whSelect = document.getElementById('warehouse-select');
+const whHidden = document.querySelector('input[name="warehouse"]');
+
+if (cityInput) {
+    cityInput.addEventListener('input', async (e) => {
+        const q = e.target.value.trim();
+        if (q.length < 2) { suggestionsBox.innerHTML = ''; return; }
+        try {
+            const r = await fetch(NP_URL, { method: 'POST', body: JSON.stringify({ apiKey: NP_KEY, modelName: 'Address', calledMethod: 'searchSettlements', methodProperties: { CityName: q, Limit: 5 } }) });
+            const d = await r.json();
+            if (d.success && d.data[0]?.Addresses?.length) {
+                suggestionsBox.innerHTML = d.data[0].Addresses.map(a =>
+                    `<div class="np-item" data-ref="${a.DeliveryCity}" style="padding:10px;cursor:pointer;border-bottom:1px solid #f5f5f5;font-size:14px;">${a.MainDescription} (${a.Area} обл.)</div>`
+                ).join('');
+            }
+        } catch(e){}
+    });
+
+    suggestionsBox.addEventListener('click', (e) => {
+        const item = e.target.closest('.np-item');
+        if (item) {
+            cityInput.value = item.innerText.split('(')[0].trim();
+            suggestionsBox.innerHTML = '';
+            loadWH(item.dataset.ref);
+        }
+    });
+}
+
+async function loadWH(ref) {
+    if (!whSelect) return;
+    whSelect.innerHTML = '<option>⏳ Завантаження...</option>';
+    try {
+        const r = await fetch(NP_URL, { method: 'POST', body: JSON.stringify({ apiKey: NP_KEY, modelName: 'Address', calledMethod: 'getWarehouses', methodProperties: { CityRef: ref } }) });
+        const d = await r.json();
+        if (d.success) {
+            whSelect.innerHTML = d.data.map(w => `<option value="${w.Description}">${w.Description}</option>`).join('');
+            if (whHidden) whHidden.value = whSelect.value;
+        }
+    } catch(e){}
+}
+
+if (whSelect) whSelect.addEventListener('change', () => { if (whHidden) whHidden.value = whSelect.value; });
+</script>
+{% endblock %}

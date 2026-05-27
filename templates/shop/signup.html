@@ -1,0 +1,31 @@
+{% extends 'shop/base.html' %}
+{% block title %}Реєстрація | VeloParts{% endblock %}
+
+{% block content %}
+<div class="auth-card">
+    <div class="auth-icon">🚲</div>
+    <h1 class="auth-title">Реєстрація</h1>
+    <p class="auth-subtitle">Створіть акаунт та накопичуйте бонуси!</p>
+
+    {% if form.non_field_errors %}
+        <div style="background:#f8d7da;color:#721c24;padding:10px;border-radius:6px;margin-bottom:15px;font-size:14px;">
+            {% for error in form.non_field_errors %}<p style="margin:0;">{{ error }}</p>{% endfor %}
+        </div>
+    {% endif %}
+
+    <form method="post" style="text-align: left;">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}<span class="form-error">{{ field.errors|join:", " }}</span>{% endif %}
+                {% if field.help_text %}<small class="form-hint">{{ field.help_text|safe }}</small>{% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn-auth">Зареєструватись</button>
+    </form>
+
+    <p class="auth-switch">Вже маєте акаунт? <a href="{% url 'login' %}">Увійти</a></p>
+</div>
+{% endblock %}

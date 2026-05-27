@@ -6,29 +6,21 @@ from .models import (
     Profile, Order, OrderItem
 )
 
-
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
     extra = 0
     readonly_fields = ('price',)
 
-
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'final_icon', 'name', 'parent', 'created_at', 'updated_at')
+    # Використовуємо поле 'icon' замість 'final_icon' для стабільності
+    list_display = ('id', 'name', 'icon', 'created_at', 'updated_at')
     list_display_links = ('id', 'name')
     search_fields = ('name',)
-
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == "parent":
-            kwargs["queryset"] = Category.objects.filter(parent__isnull=True)
-        return super().formfield_for_foreignkey(db_field, request, **kwargs)
-
 
 @admin.register(Brand)
 class BrandAdmin(admin.ModelAdmin):
     list_display = ('name', 'created_at', 'updated_at')
-
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
@@ -37,7 +29,6 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ('name', 'description')
     list_filter = ('category', 'brand')
 
-
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
     list_display = ('author', 'product', 'rating', 'created_at')
@@ -45,14 +36,12 @@ class ReviewAdmin(admin.ModelAdmin):
     search_fields = ('author', 'text')
     readonly_fields = ('created_at',)
 
-
 @admin.register(Newsletter)
 class NewsletterAdmin(admin.ModelAdmin):
     list_display = ('email', 'created_at', 'is_active')
     search_fields = ('email',)
     list_filter = ('is_active',)
     readonly_fields = ('created_at',)
-
 
 @admin.register(NewsletterCampaign)
 class NewsletterCampaignAdmin(admin.ModelAdmin):
@@ -87,12 +76,10 @@ class NewsletterCampaignAdmin(admin.ModelAdmin):
                 except Exception as e:
                     print(f"Помилка розсилки: {e}")
 
-
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'phone', 'bonuses')
     search_fields = ('user__username', 'phone')
-
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
@@ -101,7 +88,6 @@ class OrderAdmin(admin.ModelAdmin):
     list_editable = ('status',)
     search_fields = ('user__username', 'city')
     inlines = [OrderItemInline]
-
 
 @admin.register(OrderItem)
 class OrderItemAdmin(admin.ModelAdmin):

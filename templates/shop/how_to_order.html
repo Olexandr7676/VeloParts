@@ -1,0 +1,77 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}Як замовити | VeloParts{% endblock %}
+
+{% block content %}
+<style>
+    .steps-container {
+        display: flex;
+        gap: 20px;
+        margin-top: 30px;
+        flex-wrap: wrap;
+    }
+    /* Робимо посилання схожим на звичайну картку */
+    .step-card {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        text-align: center;
+        flex: 1;
+        min-width: 250px;
+        border: 1px solid #eee;
+        transition: 0.3s;
+        text-decoration: none; /* Прибираємо підкреслення */
+        color: inherit;        /* Колір як у тексту */
+        display: block;        /* Щоб працювало як блок */
+    }
+    .step-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        border-color: var(--velo-accent);
+    }
+    .step-number {
+        width: 50px;
+        height: 50px;
+        background: var(--velo-accent);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 20px;
+        font-weight: bold;
+    }
+    .step-icon { font-size: 40px; margin-bottom: 15px; display: block; }
+    .step-title { font-size: 18px; color: var(--velo-dark); margin-bottom: 10px; font-weight: bold; }
+    .step-text { color: #666; font-size: 14px; line-height: 1.5; }
+</style>
+
+<div class="cart-wrapper">
+    <h1 class="section-title">Як зробити замовлення</h1>
+
+    <div class="steps-container">
+        <a href="{% url 'home' %}" class="step-card">
+            <div class="step-number">1</div>
+            <span class="step-icon">🛒</span>
+            <div class="step-title">Вибір товару</div>
+            <p class="step-text">Перейдіть до каталогу, оберіть потрібну категорію та натисніть кнопку "Купити" біля товару, який вам сподобався.</p>
+        </a>
+
+        <a href="{% url 'cart' %}" class="step-card">
+            <div class="step-number">2</div>
+            <span class="step-icon">📝</span>
+            <div class="step-title">Оформлення</div>
+            <p class="step-text">Перейдіть до кошика, перевірте кількість товарів, переконайтеся що все вірно, та натисніть "Оформити замовлення".</p>
+        </a>
+
+        <a href="{% url 'cabinet' %}" class="step-card">
+            <div class="step-number">3</div>
+            <span class="step-icon">📦</span>
+            <div class="step-title">Отримання</div>
+            <p class="step-text">Після оформлення ви можете відстежувати статус вашого замовлення та бачити накопичені бонуси у вашому особистому кабінеті.</p>
+        </a>
+    </div>
+</div>
+{% endblock %}

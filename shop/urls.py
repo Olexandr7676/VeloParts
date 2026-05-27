@@ -1,6 +1,8 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     # ── ГОЛОВНА ТА КАТЕГОРІЇ ─────────────────────────────────────
@@ -50,4 +52,8 @@ urlpatterns = [
 
     # ── СТАТИЧНІ СТОРІНКИ ────────────────────────────────────────
     path('about/', views.about_view, name='about'),
+    path('how-to-order/', views.how_to_order_view, name='how_to_order'),
+    path('payment/', views.payment_view, name='payment'),
+    path('contacts/', views.contacts_view, name='contacts'),
+
 ]

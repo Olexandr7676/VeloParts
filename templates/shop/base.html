@@ -17,8 +17,10 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--velo-gray); color: var(--text-dark); display: flex; flex-direction: column; min-height: 100vh; }
 
-        /* ── ХЕДЕР ── */
-        .site-header { background: var(--velo-dark); color: white; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; }
+        /* ── ХЕДЕР (Тепер тримається разом) ── */
+        .site-header { background: var(--velo-dark); color: white; padding: 15px 0; }
+        .header-inner { max-width: 1400px; margin: 0 auto; padding: 0 20px; width: 100%; display: flex; justify-content: space-between; align-items: center; }
+
         .logo-link { display: flex; align-items: center; gap: 12px; text-decoration: none; color: white; }
         .logo-emoji { font-size: 36px; }
         .logo-text .logo-title { font-size: 24px; font-weight: 900; letter-spacing: 1px; display: block; }
@@ -35,8 +37,8 @@
 
         /* ── НАВІГАЦІЯ ── */
         .site-nav { background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 1000; }
-        .nav-inner { max-width: 1400px; margin: 0 auto; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; }
-        .nav-links { display: flex; list-style: none; }
+        .nav-inner { max-width: 1400px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; }
+        .nav-links { display: flex; list-style: none; margin-left: auto; margin-right: 30px; }
         .nav-links a { color: var(--text-dark); text-decoration: none; padding: 18px 15px; font-size: 13px; font-weight: 700; text-transform: uppercase; display: block; transition: 0.2s; }
         .nav-links a:hover { color: var(--velo-accent); }
         .nav-auth { display: flex; align-items: center; gap: 15px; }
@@ -70,15 +72,6 @@
         .sidebar-header { background: var(--velo-dark); color: white; padding: 15px 20px; font-weight: bold; text-align: center; letter-spacing: 0.5px; }
         .sidebar a { display: block; padding: 12px 20px; color: var(--text-dark); text-decoration: none; border-bottom: 1px solid #f0f0f0; transition: 0.2s; }
         .sidebar a:hover { background: #fff0f1; color: var(--velo-accent); padding-left: 25px; }
-        .sidebar-sub a { font-size: 14px; padding: 10px 15px 10px 40px; color: #555; background: #fafafa; border-bottom: 1px solid #f5f5f5; }
-        .sidebar-sub a:hover { background: #fff0f1; color: var(--velo-accent); padding-left: 45px; }
-
-        /* details/summary для підкатегорій */
-        details summary { list-style: none; display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; cursor: pointer; border-bottom: 1px solid #f0f0f0; font-weight: bold; color: var(--text-dark); transition: 0.2s; }
-        details summary::-webkit-details-marker { display: none; }
-        details summary:hover { background: #fff0f1; color: var(--velo-accent); }
-        details[open] .arrow { transform: rotate(180deg); }
-        .arrow { font-size: 11px; color: #999; transition: transform 0.3s; display: inline-block; }
 
         /* ── ОСНОВНИЙ КОНТЕНТ ── */
         .main-content { flex: 1; min-width: 0; }
@@ -90,7 +83,23 @@
         .product-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
         .product-img-box { height: 180px; display: flex; align-items: center; justify-content: center; background: #f9f9f9; border-radius: 8px; overflow: hidden; margin-bottom: 15px; border: 1px solid #eee; }
         .product-img-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
-        .product-name { font-size: 15px; font-weight: 700; color: var(--velo-dark); text-decoration: none; display: block; height: 44px; overflow: hidden; margin-bottom: 8px; }
+        .product-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--velo-dark);
+    text-decoration: none;
+    display: block;
+    margin-bottom: 8px;
+
+    /* ВИРІВНЮВАННЯ ТА ПЕРЕНОСИ */
+    text-align: center;       /* Ось це робить текст по центру */
+    word-break: break-word;   /* Розриває довгі слова, щоб не вилазили */
+    overflow-wrap: break-word;/* Додатково гарантує перенос */
+
+    /* Висота */
+    min-height: 44px;
+    overflow: hidden;
+}
         .product-price { font-size: 20px; font-weight: 900; color: var(--velo-red); margin-bottom: 12px; }
         .btn-buy { background: var(--velo-accent); color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: bold; font-size: 14px; transition: 0.2s; margin-top: auto; }
         .btn-buy:hover { background: #c73652; }
@@ -137,8 +146,8 @@
         .pagination .current { background: var(--velo-accent); color: white; border-color: var(--velo-accent); }
 
         /* ── FOOTER ── */
-        .site-footer { background: var(--velo-dark); color: #ccc; padding: 35px 40px 20px; margin-top: auto; }
-        .footer-inner { max-width: 1400px; margin: 0 auto; }
+        .site-footer { background: var(--velo-dark); color: #ccc; padding: 35px 0 20px; margin-top: auto; }
+        .footer-inner { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
         .footer-top { display: flex; justify-content: flex-end; margin-bottom: 30px; }
         .newsletter-block { display: flex; flex-direction: column; gap: 10px; max-width: 400px; width: 100%; }
         .newsletter-title { font-weight: bold; font-size: 15px; color: white; }
@@ -156,45 +165,44 @@
 <body>
 
     {% if url_name not in auth_pages %}
-    <!-- ── ХЕДЕР ── -->
     <header class="site-header">
-        <a href="{% url 'home' %}" class="logo-link">
-            <span class="logo-emoji">🚲</span>
-            <div class="logo-text">
-                <span class="logo-title">VELOPARTS</span>
-                <span class="logo-sub">Запчастини для велосипедів</span>
-            </div>
-        </a>
-        <div class="header-right">
-            <div class="header-info">
-                <span class="ico">📞</span>
-                <div>Дзвоніть з 09:00 до 18:00<br><strong>0 (99) 646-18-61</strong></div>
-            </div>
-            <div class="header-info">
-                <span class="ico">📍</span>
-                <div>Магазин «VeloParts»<br><strong>м. Луцьк, вул. Соборності, 14</strong></div>
-            </div>
-            <a href="{% url 'cart' %}" class="cart-btn">
-                🛒 <span class="cart-count">{{ request.session.cart|length|default:"0" }}</span>
+        <div class="header-inner">
+            <a href="{% url 'home' %}" class="logo-link">
+                <span class="logo-emoji">🚲</span>
+                <div class="logo-text">
+                    <span class="logo-title">VELOPARTS</span>
+                    <span class="logo-sub">Запчастини для велосипедів</span>
+                </div>
             </a>
+            <div class="header-right">
+                <div class="header-info">
+                    <span class="ico">📞</span>
+                    <div>Дзвоніть з 09:00 до 18:00<br><strong>0 (99) 646-18-61</strong></div>
+                </div>
+                <div class="header-info">
+                    <span class="ico">📍</span>
+                    <div>Магазин «VeloParts»<br><strong>м. Луцьк, вул. Соборності, 14</strong></div>
+                </div>
+                <a href="{% url 'cart' %}" class="cart-btn">
+                    🛒 <span class="cart-count">{{ request.session.cart|length|default:"0" }}</span>
+                </a>
+            </div>
         </div>
     </header>
 
-    <!-- ── НАВІГАЦІЯ ── -->
     <nav class="site-nav">
         <div class="nav-inner">
             <ul class="nav-links">
-                <li><a href="{% url 'home' %}">Головна</a></li>
-                <li><a href="{% url 'about' %}">Про нас</a></li>
-            </ul>
+    <li><a href="{% url 'home' %}">Головна</a></li>
+    <li><a href="{% url 'about' %}">Про нас</a></li>
+    <li><a href="{% url 'how_to_order' %}">Як замовити</a></li>
+    <li><a href="{% url 'payment' %}">Оплата та доставка</a></li>
+    <li><a href="{% url 'contacts' %}">Контакти</a></li>
+</ul>
             <div class="nav-auth">
                 {% if user.is_authenticated %}
                     <a href="{% url 'cabinet' %}">👤 {{ user.first_name|default:user.username }}</a>
-                    <form action="{% url 'logout' %}" method="post" style="margin: 0;">
-                        {% csrf_token %}
-                        <button type="submit" style="background: none; border: none; cursor: pointer; font-weight: bold; color: var(--velo-accent); font-size: 14px;">Вийти</button>
-                    </form>
-                {% else %}
+                    {% else %}
                     <a href="{% url 'login' %}">Увійти</a>
                     <a href="{% url 'signup' %}" class="btn-signup">Реєстрація</a>
                 {% endif %}
@@ -202,7 +210,6 @@
         </div>
     </nav>
 
-    <!-- ── FLASH ПОВІДОМЛЕННЯ ── -->
     {% if messages %}
     <div class="messages-box">
         {% for message in messages %}
@@ -210,44 +217,40 @@
         {% endfor %}
     </div>
     {% endif %}
+    {% endif %}
 
-    <!-- ── LAYOUT ── -->
+    {% if url_name not in auth_pages %}
     <div class="page-wrapper">
-        <!-- Сайдбар показуємо тільки на головній та категоріях -->
         {% if url_name == 'home' or url_name == 'category' %}
+
         <aside class="sidebar">
             <div class="sidebar-header">КАТАЛОГ ТОВАРІВ</div>
             <div>
                 <a href="{% url 'home' %}">📦 Всі товари</a>
                 {% for cat in categories %}
-                    {% if not cat.parent %}
-                        {% if cat.subcategories.all %}
-                            <details>
-                                <summary>
-                                    <span>{{ cat.final_icon }} {{ cat.name }}</span>
-                                    <span class="arrow">▼</span>
-                                </summary>
-                                <div class="sidebar-sub">
-                                    {% for sub in cat.subcategories.all %}
-                                        <a href="{% url 'category' sub.id %}">{{ sub.final_icon }} {{ sub.name }}</a>
-                                    {% endfor %}
-                                </div>
-                            </details>
-                        {% else %}
-                            <a href="{% url 'category' cat.id %}">{{ cat.final_icon }} {{ cat.name }}</a>
-                        {% endif %}
-                    {% endif %}
+                    <a href="{% url 'category' cat.id %}">{{ cat.icon|default:"⚙️" }} {{ cat.name }}</a>
                 {% endfor %}
             </div>
         </aside>
+
         {% endif %}
 
         <main class="main-content">
-            {% block content %}{% endblock %}
+    {% else %}
+    <div class="auth-page">
+    {% endif %}
+
+        {% block content %}{% endblock %}
+
+    {% if url_name not in auth_pages %}
         </main>
     </div>
+    {% else %}
+    </div>
+    {% endif %}
 
-    <!-- ── FOOTER ── -->
+
+    {% if url_name not in auth_pages %}
     <footer class="site-footer">
         <div class="footer-inner">
             <div class="footer-top">
@@ -263,12 +266,6 @@
             <p class="footer-copy">© 2026 Магазин VELOPARTS 🚲 Всі права захищено.</p>
         </div>
     </footer>
-
-    {% else %}
-    <!-- ── СТОРІНКИ АВТОРИЗАЦІЇ (без хедера/футера) ── -->
-    <div class="auth-page">
-        {% block content %}{% endblock %}
-    </div>
     {% endif %}
 
 {% endwith %}
